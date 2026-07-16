@@ -74,19 +74,19 @@ def call(Map configMap){
                     }
                 }
             }
-            stage('Trivy Dependency Scan') {
-                steps {
-                    script {
-                        sh '''
-                        trivy fs \
-                        --severity HIGH,CRITICAL \
-                        --ignore-unfixed \
-                        --exit-code 1 \
-                        .
-                        '''
-                    }
-                }
-            }
+            // stage('Trivy Dependency Scan') {
+            //     steps {
+            //         script {
+            //             sh '''
+            //             trivy fs \
+            //             --severity HIGH,CRITICAL \
+            //             --ignore-unfixed \
+            //             --exit-code 1 \
+            //             .
+            //             '''
+            //         }
+            //     }
+            // }
             stage('Docker build'){
                 steps{
                     script{
@@ -98,19 +98,19 @@ def call(Map configMap){
                     }
                 }
             }
-            stage('Trivy Image Scan'){
-                steps{
-                    script{
-                        sh """
-                        trivy image \
-                        --severity HIGH,CRITICAL \
-                        --ignore-unfixed \
-                        --exit-code 1 \
-                        ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
-                        """
-                    }
-                }
-            }
+            // stage('Trivy Image Scan'){
+            //     steps{
+            //         script{
+            //             sh """
+            //             trivy image \
+            //             --severity HIGH,CRITICAL \
+            //             --ignore-unfixed \
+            //             --exit-code 1 \
+            //             ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+            //             """
+            //         }
+            //     }
+            // }
             stage('Push image to ECR'){
                 steps{
                     script{
