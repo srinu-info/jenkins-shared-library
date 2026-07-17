@@ -9,13 +9,14 @@ def call(Map configMap){
             ACC_ID='597819998113'
             PROJECT='flower-store'
             COMPONENT=configMap.get('component')
+            IMAGE_TAG = "${BUILD_NUMBER}"
         }
         options{
             timeout(time: 30, unit: 'MINUTES')
             disableConcurrentBuilds()
         }
         parameters{
-            string(name: 'appVersion', description: 'Image version of the application')
+            string(name: 'IMAGE_TAG', description: 'Image version of the application')
             choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Pick the Environment')
         }
         //Build
@@ -30,7 +31,7 @@ def call(Map configMap){
                                 kubectl apply -f namespace.yml
                                 cd ${COMPONENT}
                                 
-                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n store --set deployment.imageVersion=${params.appVersion}
+                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n store --set deployment.imageVersion=${IMAGE_TAG}
                                 kubectl rollout status deployment/${COMPONENT} -n store
                             """
                         }                   
