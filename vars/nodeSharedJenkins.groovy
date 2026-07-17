@@ -9,6 +9,7 @@ def call(Map configMap){
             ACC_ID='597819998113'
             PROJECT='flower-store'
             COMPONENT=configMap.get('component')
+            IMAGE_TAG = "${BUILD_NUMBER}"
         }
         options{
             timeout(time: 30, unit: 'MINUTES')
@@ -92,7 +93,7 @@ def call(Map configMap){
                     script{
                         withAWS(credentials: 'aws-creds', region: 'us-east-1'){
                             sh """                       
-                            docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
+                            docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${IMAGE_TAG} .
                             """
                         }                    
                     }
@@ -117,7 +118,7 @@ def call(Map configMap){
                         withAWS(credentials: 'aws-creds', region: 'us-east-1'){
                             sh """
                             aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
-                            docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                            docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${IMAGE_TAG}
                             """
                         }                    
                     }
@@ -131,7 +132,7 @@ def call(Map configMap){
                     script{
                         build job :"${COMPONENT}-cd",
                         parameters:[
-                            string(name: 'appVersion', value: "${appVersion}"),
+                            string(name: 'appVersion', value: "${IMAGE_TAG}"),
                             string(name: 'deploy_to', value: 'dev')
                         ],
                         propagate: false,
