@@ -40,14 +40,14 @@ def call(Map configMap){
                 steps{
                     script{
                         withAWS(credentials: 'aws-creds', region: 'us-east-1'){
-                            def deploymentStatus=sh(returnStdout: true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=120s -n store || echo FAILED").trim()
+                            def deploymentStatus=sh(returnStdout: true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=180s -n store || echo FAILED").trim()
                             if(deploymentStatus.contains("successfully rolled out")){
                                 echo "Deployment is success"
                             }else{
                                 sh """
                                 helm rollback ${COMPONENT} -n store
                                 """
-                                def rollbackStatus=sh(returnStdout:true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=120s -n store || echo FAILED").trim()
+                                def rollbackStatus=sh(returnStdout:true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=180s -n store || echo FAILED").trim()
                             if(rollbackStatus.contains("successfully rolled out")){
                                 echo "Deployment is failure,  Rollback success"
                             }else{
