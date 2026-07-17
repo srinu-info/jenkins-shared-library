@@ -29,8 +29,9 @@ def call(Map configMap){
                                 kubectl get nodes
                                 kubectl apply -f namespace.yml
                                 cd ${COMPONENT}
-                                sed -i "s/IMAGE_VERSION/${params.appVersion}/g" values-${params.deploy_to}.yaml
-                                helm upgrade --install $COMPONENT -f values-${params.deploy_to}.yaml -n store .
+                                
+                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n store --set deployment.imageVersion=${params.appVersion}
+                                kubectl rollout status deployment/${COMPONENT} -n store
                             """
                         }                   
                     }
