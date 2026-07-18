@@ -9,7 +9,7 @@ def call(Map configMap){
             ACC_ID='597819998113'
             PROJECT='flower-store'
             COMPONENT=configMap.get('component')
-            IMAGE_TAG = "${BUILD_NUMBER}"
+            
         }
         options{
             timeout(time: 30, unit: 'MINUTES')
@@ -31,7 +31,7 @@ def call(Map configMap){
                                 kubectl apply -f namespace.yml
                                 cd ${COMPONENT}
                                 
-                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n store --set deployment.imageVersion=${IMAGE_TAG}
+                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n store --set deployment.imageVersion=${params.IMAGE_TAG}
                                 kubectl rollout status deployment/${COMPONENT} -n store
                             """
                         }                   

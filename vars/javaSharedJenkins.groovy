@@ -9,6 +9,7 @@ def call(Map configMap){
             ACC_ID='597819998113'
             PROJECT='flower-store'
             COMPONENT=configMap.get('component')
+            IMAGE_TAG="${env.BUILD_NUMBER}"
         }
         options{
             timeout(time: 30, unit: 'MINUTES')
@@ -122,7 +123,7 @@ def call(Map configMap){
                     script{
                         build job :"${COMPONENT}-cd",
                         parameters:[
-                            string(name: 'appVersion', value: "${appVersion}"),
+                            string(name: 'IMAGE_TAG', value: "${IMAGE_TAG}"),
                             string(name: 'deploy_to', value: 'dev')
                         ],
                         propagate: false,

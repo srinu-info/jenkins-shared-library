@@ -9,7 +9,7 @@ def call(Map configMap){
             ACC_ID='597819998113'
             PROJECT='flower-store'
             COMPONENT=configMap.get('component')
-            IMAGE_TAG = "${BUILD_NUMBER}"
+            IMAGE_TAG="${env.BUILD_NUMBER}"
         }
         options{
             timeout(time: 30, unit: 'MINUTES')
