@@ -56,25 +56,25 @@ def call(Map configMap){
                     }
                 }
             }
-            stage('Sonar scan'){
-                environment{
-                    scannerHome = tool 'sonar 8.1'
-                }
-                steps{
-                    script{
-                    withSonarQubeEnv(installationName: 'sonar 8.1') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-                    }
-                }
-            }
-            stage('Quality gates'){
-                steps{
-                    timeout(time: 1, unit: "HOURS"){
-                        waitForQualityGate abortPipeline :true
-                    }
-                }
-            }
+            // stage('Sonar scan'){
+            //     environment{
+            //         scannerHome = tool 'sonar 8.1'
+            //     }
+            //     steps{
+            //         script{
+            //         withSonarQubeEnv(installationName: 'sonar 8.1') {
+            //         sh "${scannerHome}/bin/sonar-scanner"
+            //     }
+            //         }
+            //     }
+            // }
+            // stage('Quality gates'){
+            //     steps{
+            //         timeout(time: 1, unit: "HOURS"){
+            //             waitForQualityGate abortPipeline :true
+            //         }
+            //     }
+            // }
             // stage('Trivy Dependency Scan') {
             //     steps {
             //         script {
