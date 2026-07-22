@@ -26,7 +26,7 @@ def call(Map configMap){
                     script{
                         withAWS(credentials: 'aws-creds', region: 'us-east-1'){
                             sh """
-                                aws eks update-kubeconfig --region ${REGION} --name "${PROJECT}-${params.deploy_to}"
+                                aws eks update-kubeconfig --region ${REGION} --name "${PROJECT}-dev"
                                 kubectl get nodes
                                 kubectl apply -f namespace.yml
                                 cd ${COMPONENT}
