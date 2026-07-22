@@ -31,8 +31,8 @@ def call(Map configMap){
                                 kubectl apply -f namespace.yml
                                 cd ${COMPONENT}
                                 
-                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n store --set deployment.imageVersion=${params.IMAGE_TAG}
-                                kubectl rollout status deployment/${COMPONENT} -n store
+                                helm upgrade --install ${COMPONENT} . -f values-${params.deploy_to}.yaml -n ${params.deploy_to}-store --set deployment.imageVersion=${params.IMAGE_TAG}
+                                kubectl rollout status deployment/${COMPONENT} -n ${params.deploy_to}-store
                             """
                         }                   
                     }
@@ -42,14 +42,14 @@ def call(Map configMap){
                 steps{
                     script{
                         withAWS(credentials: 'aws-creds', region: 'us-east-1'){
-                            def deploymentStatus=sh(returnStdout: true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=180s -n store || echo FAILED").trim()
+                            def deploymentStatus=sh(returnStdout: true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=180s -n ${params.deploy_to}-store || echo FAILED").trim()
                             if(deploymentStatus.contains("successfully rolled out")){
                                 echo "Deployment is success"
                             }else{
                                 sh """
-                                helm rollback ${COMPONENT} -n store
+                                helm rollback ${COMPONENT} -n ${params.deploy_to}-store
                                 """
-                                def rollbackStatus=sh(returnStdout:true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=180s -n store || echo FAILED").trim()
+                                def rollbackStatus=sh(returnStdout:true, script:"kubectl rollout status deployment/${COMPONENT} --timeout=180s -n ${params.deploy_to}-store || echo FAILED").trim()
                             if(rollbackStatus.contains("successfully rolled out")){
                                 echo "Deployment is failure,  Rollback success"
                             }else{
