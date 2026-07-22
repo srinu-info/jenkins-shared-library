@@ -17,7 +17,7 @@ def call(Map configMap){
         }
         parameters{
             string(name: 'IMAGE_TAG', description: 'Image version of the application')
-            choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Pick the Environment')
+            choice(name: 'deploy_to', choices: ['dev', 'prod'], description: 'Pick the Environment')
         }
         //Build
         stages{         
