@@ -121,13 +121,13 @@ def call(Map configMap){
                 }
                 steps{
                     script{
-                        build job: "STORE-PROD/${COMPONENT}-cd",
+                        build job: "STORE/${COMPONENT}-cd-dev",
                         parameters:[
                             string(name: 'IMAGE_TAG', value: "${IMAGE_TAG}"),
                             string(name: 'deploy_to', value: 'dev')
                         ],
-                        propagate: false,
-                        wait: false                                    
+                        propagate: false, //if cd fails ci also failed
+                        wait: false     // no need to wait for cd completion                               
                     }
                 }
             }
