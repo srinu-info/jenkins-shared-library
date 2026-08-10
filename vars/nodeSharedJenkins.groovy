@@ -130,7 +130,7 @@ def call(Map configMap){
                 }
                 steps{
                     script{
-                        build job: "STORE-PROD/${COMPONENT}-cd",
+                        build job: "STORE/${COMPONENT}-cd-dev",
                         parameters:[
                             string(name: 'IMAGE_TAG', value: "${IMAGE_TAG}"),
                             string(name: 'deploy_to', value: 'dev')
