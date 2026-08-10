@@ -16,7 +16,7 @@ def call(Map configMap){
             disableConcurrentBuilds()
         }
         parameters{
-            booleanParam(name: 'deploy', defaultValue: false, description: 'togle this value')
+            booleanParam(name: 'deploy', defaultValue: true, description: 'togle this value')
         }
         //Build
         stages{
