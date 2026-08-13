@@ -20,6 +20,14 @@ def call(Map configMap){
         }
         //Build
         stages{
+            stage('Checkout'){
+                steps{
+                    checkout scm 
+                    //source code management checkout the code using already configured git url and branch
+                }
+            }
+        }
+                
             stage('Read pom.xml'){
                 steps{
                     script{
@@ -50,10 +58,12 @@ def call(Map configMap){
             // stage('Sonar scan'){
             //     environment{
             //         scannerHome = tool 'sonar 8.1'
+            // // already jenkins admin installed sonarqube in global tool configuration 
             //     }
             //     steps{
             //         script{
             //         withSonarQubeEnv(installationName: 'sonar 8.1') {
+            // //withSonarQubeEnv using this jenkins securely injencts sonar url and token configured in configure system
             //         sh "${scannerHome}/bin/sonar-scanner"
             //     }
             //         }
@@ -62,6 +72,7 @@ def call(Map configMap){
             // stage('Quality gates'){
             //     steps{
             //         timeout(time: 1, unit: "HOURS"){
+            //    // if SonarQube server hangs without timeout build never complete with timeout pipeline aborted 
             //             waitForQualityGate abortPipeline :true
             //         }
             //     }
