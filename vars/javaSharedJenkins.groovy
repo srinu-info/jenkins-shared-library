@@ -26,7 +26,6 @@ def call(Map configMap){
                     //source code management checkout the code using already configured git url and branch
                 }
             }
-        }
                 
             stage('Read pom.xml'){
                 steps{
