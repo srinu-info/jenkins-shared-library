@@ -30,7 +30,8 @@ def call(Map configMap){
             stage('Read pom.xml'){
                 steps{
                     script{
-                        def pom = readMavenPom()
+                        def pom = readMavenPom() 
+                        //readMavenPom() is a Jenkins Pipeline Utility Steps plugin function.
                         appVersion= pom.version
                         echo "app version : ${appVersion}"
                     }
@@ -73,6 +74,7 @@ def call(Map configMap){
             //         timeout(time: 1, unit: "HOURS"){
             //    // if SonarQube server hangs without timeout build never complete with timeout pipeline aborted 
             //             waitForQualityGate abortPipeline :true
+                //It is provided by the Jenkins SonarQube Scanner plugin.this means QG failed jenkins marked the pipeline as failed
             //         }
             //     }
             // }
